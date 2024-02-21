@@ -45,7 +45,7 @@ After installing, add the plugin to your `.stylelintrc` config. Under the `plugi
 The following patterns are considered violations:
 
 ```css
-.foo :before {
+.foo ::before {
   content: 'foo';
 }
 ```
@@ -53,7 +53,7 @@ The following patterns are considered violations:
 The following patterns are *not* considered violations:
 
 ```css
-.foo &:before {
+.foo &::before {
   content: 'foo';
 }
 ```
@@ -63,7 +63,7 @@ The following patterns are *not* considered violations:
 The following patterns are considered violations:
 
 ```css
-.foo &:before {
+.foo &::before {
   content: 'foo';
 }
 ```
@@ -71,7 +71,7 @@ The following patterns are considered violations:
 The following patterns are *not* considered violations:
 
 ```css
-.foo :before {
+.foo ::before {
   content: 'foo';
 }
 ```
