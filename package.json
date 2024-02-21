@@ -1,6 +1,6 @@
 {
   "name": "@jantimon/stylelint-enforce-pseudo-ampersand",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A stylelint plugin that enforces the use of ampersands in front of pseudo selectors",
   "module": "dist/index.js",
   "main": "dist/index.cjs",
@@ -44,5 +44,8 @@
     "stylelint-test-rule-node": "^0.2.1",
     "tsup": "8.0.2",
     "typescript": "5.3.3"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
