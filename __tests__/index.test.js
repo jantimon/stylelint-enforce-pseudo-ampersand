@@ -71,3 +71,70 @@ testRule({
     }
   ]
 });
+
+testRule({
+  description: "should pass when using & with :before",
+  plugins: [plugin],
+  ruleName,
+  config: "never",
+  fix: true,
+
+  accept: [
+    {
+      description: "should pass when using :before without &",
+      code: ".foo { :before { content: 'foo'; } }"
+    },
+    { 
+      description: "should pass when using :after without &",
+      code: ".foo { :after { content: 'foo'; } }"
+    },
+    {
+      description: "should pass when using ::before without &",
+      code: ".foo { ::before { content: 'foo'; } }"
+    },
+    { 
+      description: "should pass when using ::after without &",
+      code: ".foo { ::after { content: 'foo'; } }"
+    },
+    
+  ],
+
+  reject: [
+    {
+      description: "should fail when using & with :before",
+      code: ".foo { &:before { content: 'foo'; } }",
+      fixed: ".foo { :before { content: 'foo'; } }",
+      warnings: [
+        { message: messages.rejected("never") }
+      ],
+      error: true,
+    },
+    {
+      description: "should fail when using & with :after",
+      code: ".foo { &:after { content: 'foo'; } }",
+      fixed: ".foo { :after { content: 'foo'; } }",
+      warnings: [
+        { message: messages.rejected("never") }
+      ],
+      error: true,
+    },
+    {
+      description: "should fail when using & with ::before",
+      code: ".foo { &::before { content: 'foo'; } }",
+      fixed: ".foo { ::before { content: 'foo'; } }",
+      warnings: [
+        { message: messages.rejected("never") }
+      ],
+      error: true,
+    },
+    {
+      description: "should fail when using & with ::after",
+      code: ".foo { &::after { content: 'foo'; } }",
+      fixed: ".foo { ::after { content: 'foo'; } }",
+      warnings: [
+        { message: messages.rejected("never") }
+      ],
+      error: true,
+    }
+  ]
+});
