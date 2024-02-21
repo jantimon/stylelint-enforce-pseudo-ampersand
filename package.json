@@ -1,0 +1,48 @@
+{
+  "name": "@jantimon/stylelint-enforce-pseudo-ampersand",
+  "version": "1.0.0",
+  "description": "A stylelint plugin that enforces the use of ampersands in front of pseudo selectors",
+  "module": "dist/index.js",
+  "main": "dist/index.cjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ]
+    }
+  },
+  "type": "module",
+  "author": {
+    "name": "Jan Nicklas",
+    "url": "https://github.com/jantimon/"
+  },
+  "bugs": {
+    "url": "https://github.com/jantimon/stylelint-enforce-pseudo-ampersand/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup ./index.ts --clean --format cjs,esm",
+    "test": "node --test ./__tests__/index.test.js",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "peerDependencies": {
+    "stylelint": ">=16"
+  },
+  "homepage": "https://github.com/jantimon/stylelint-enforce-pseudo-ampersand#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jantimon/stylelint-enforce-pseudo-ampersand.git"
+  },
+  "devDependencies": {
+    "stylelint": "16.2.1",
+    "stylelint-test-rule-node": "^0.2.1",
+    "tsup": "8.0.2",
+    "typescript": "5.3.3"
+  }
+}
