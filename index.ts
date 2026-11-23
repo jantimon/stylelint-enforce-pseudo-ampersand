@@ -1,8 +1,7 @@
-import stylelint, { type PostcssResult, type RuleContext } from "stylelint";
+import stylelint, { type PostcssResult } from "stylelint";
 import type * as PostCSS from 'postcss';
 
 const ruleName = "jantimon/stylelint-enforce-pseudo-ampersand";
-const nearestSelector = "";
 const messages = stylelint.utils.ruleMessages(ruleName, {
   rejected: function(mode: "always" | "never" ) {
 
@@ -15,22 +14,12 @@ const messages = stylelint.utils.ruleMessages(ruleName, {
 });
 
 const meta = {
-  url: "https://github.com/jantimon/stylelint-enforce-pseudo-ampersand/blob/main/README.md"
+  url: "https://github.com/jantimon/stylelint-enforce-pseudo-ampersand/blob/main/README.md",
+  fixable: true
 };
 
 
-export default stylelint.createPlugin(ruleName, Object.assign((mode: "always" | "never" | undefined, secondary: {}, context: RuleContext) => {
-
-  function reportError(rule, result) {
-    stylelint.utils.report({
-      result,
-      ruleName,
-      message: messages.rejected(mode as "always" | "never"),
-      node: rule,
-      word: rule.node
-    });
-  }
-
+export default stylelint.createPlugin(ruleName, Object.assign((mode: "always" | "never" | undefined) => {
 
   return function(root: PostCSS.Root, result: PostcssResult) {
     if (!mode) {
@@ -38,37 +27,32 @@ export default stylelint.createPlugin(ruleName, Object.assign((mode: "always" | 
     }
 
     root.walkRules(rule => {
-
-      let changed = false;
-      const fixedSelectors = rule.selectors.map(selector => {
+      rule.selectors.forEach((selector, index) => {
         const pseudoMatch = selector.match(/^(\s*)(&?)(::?(before|after))/i);
         if (!pseudoMatch) {
-          return selector;
+          return;
         }
         const hasAmpersand = pseudoMatch[2] === "&";
-        if (mode === "always" && !hasAmpersand) {
-          if (context.fix) {
-            changed = true;
-            return pseudoMatch[1] + "&" + pseudoMatch[3];
-          }
-          reportError(rule, result);
+        if ((mode === "always") === hasAmpersand) {
+          return;
         }
-        if (mode === "never" && hasAmpersand) {
-          if (context.fix) {
-            changed = true;
-            return pseudoMatch[1] + pseudoMatch[3];
+        const prefix = pseudoMatch[1] + (mode === "always" ? "&" : "") + pseudoMatch[3];
+        stylelint.utils.report({
+          result,
+          ruleName,
+          message: messages.rejected(mode),
+          node: rule,
+          word: selector,
+          fix: () => {
+            const selectors = [...rule.selectors];
+            selectors[index] = prefix + selector.slice(pseudoMatch[0].length);
+            rule.selectors = selectors;
           }
-          reportError(rule, result);
-        }
-        return selector;
+        });
       });
-
-      if (context.fix && changed) {
-        rule.selectors = fixedSelectors;
-      }
     });
   }
-}, 
+},
 {
   messages,
   ruleName,
